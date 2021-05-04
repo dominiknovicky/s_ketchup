@@ -13,12 +13,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Content = () => {
+const Inbox = () => {
   const classes = useStyles();
 
   return (
     <main className={classes.content}>
       <Toolbar />
+      <Typography variant="h3" color="primary" gutterBottom>
+        Inbox
+      </Typography>
       <Typography paragraph>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
         tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus
@@ -51,4 +54,4 @@ const Content = () => {
   );
 };
 
-export default Content;
+export default Inbox;

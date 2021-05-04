@@ -7,10 +7,15 @@ import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import { ChevronLeft, Mail, Inbox } from "@material-ui/icons";
-import clsx from "clsx";
+import Icon from "@material-ui/core/Icon";
+import { Link } from "@reach/router";
 
-const drawerWidth = 250;
+const drawerWidth = 240;
+
+const navLinks = [
+  { title: "Inbox", to: "/", iconName: "inbox" },
+  { title: "Send email", to: "/mail", iconName: "email" },
+];
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,77 +24,43 @@ const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
-    whiteSpace: "nowrap",
   },
-  drawerOpen: {
+  drawerPaper: {
     width: drawerWidth,
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
   },
-  drawerClose: {
-    transition: theme.transitions.create("width", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    overflowX: "hidden",
-    width: theme.spacing(7) + 1,
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9) + 1,
-    },
+  linkTo: {
+    textDecoration: "none",
+    color: "inherit",
   },
 }));
 
-const SidebarNav = ({ menuVisibility, hideMenuClick }) => {
+const SidebarNav = () => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
       <Drawer
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: !menuVisibility,
-          [classes.drawerClose]: menuVisibility,
-        })}
+        className={classes.drawer}
+        variant="permanent"
         classes={{
-          paper: clsx({
-            [classes.drawerOpen]: !menuVisibility,
-            [classes.drawerClose]: menuVisibility,
-          }),
+          paper: classes.drawerPaper,
         }}
-        variant="permanent">
+        anchor="left">
         <Toolbar />
         <div className={classes.drawerContainer}>
-          {menuVisibility && (
-            <ListItem button key="Hide Menu" onClick={hideMenuClick}>
-              <ListItemIcon>
-                <ChevronLeft />
-              </ListItemIcon>
-              <ListItemText primary="Hide Menu" />
-            </ListItem>
-          )}
-          <Divider />
           <List>
-            {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <Inbox /> : <Mail />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
+            {navLinks.map(({ title, to, iconName }) => (
+              <Link key={title} to={to} className={classes.linkTo}>
+                <ListItem button>
+                  <ListItemIcon>
+                    <Icon>{iconName}</Icon>
+                  </ListItemIcon>
+                  <ListItemText primary={title} />
+                </ListItem>
+              </Link>
             ))}
           </List>
           <Divider />
-          <List>
-            {["All mail", "Trash", "Spam"].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <Inbox /> : <Mail />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
         </div>
       </Drawer>
     </div>
